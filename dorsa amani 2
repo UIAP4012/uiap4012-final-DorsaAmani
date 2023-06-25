@@ -1,0 +1,27 @@
+class FROSHANDEH {
+private:
+    string userName;
+    string password;
+
+public:
+    FROSHANDEH() {
+    }
+    FROSHANDEH(string userName,string password)
+        : userName(userName), password(password) {}
+
+    string getUserName() const {
+        return userName;
+    }
+
+    void setUserName(string userName) {
+        this->userName = userName;
+    }
+
+    string getPassword() const {
+        return password;
+    }
+
+    void setPassword(string password) {
+        this->password = password;
+    }
+};
