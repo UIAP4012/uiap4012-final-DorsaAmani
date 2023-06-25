@@ -1,0 +1,6 @@
+int main() {
+    SAFHEH_AVAL firstPage;
+    firstPage.firstPage();
+
+    return 0;
+}
