@@ -1,0 +1,47 @@
+class KALLA {
+private:
+    string name;
+    string series;
+    float price;
+    int tedad;
+
+public:
+    KALLA(string name, float price)
+        : name(name), price(price), tedad(0) {}
+
+    string getSeries() const {
+        return series;
+    }
+
+    void setSeries(string series) {
+        this->series = series;
+    }
+
+    string getName() const {
+        return name;
+    }
+
+    void setName(string name) {
+        this->name = name;
+    }
+
+    float getPrice() const {
+        return price;
+    }
+
+    void setPrice(float price) {
+        this->price = price;
+    }
+
+    int getNo() const {
+        return tedad;
+    }
+
+    void setNo(int no) {
+        this->tedad = no;
+    }
+
+    void decreaseNo(int i) {
+        tedad -= i;
+    }
+};
