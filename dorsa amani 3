@@ -1,0 +1,369 @@
+class SAFHEH_AVAL {
+private:
+    vector<FROSHANDEH> froshandeh;
+    int optionalSelected;
+    vector<KALLA> kalla;
+    VAHEDPOL currency;
+    FROSHANDEH admin;
+    ofstream csvFile;
+
+    float dollarValue;
+    float euroValue;
+    float tomanValue;
+
+public:
+    SAFHEH_AVAL()
+        : currency(TOMAN), dollarValue(50000), euroValue(60000), tomanValue(1000) {
+        froshandeh.push_back(FROSHANDEH("DORSA.AM", "1895161"));
+        admin = FROSHANDEH("DORSA.AM", "1895161");
+
+        ofstream userFile("FROSHANDEH.txt");
+        userFile << "Username: DORSA.AM\nPassword: 1895161\n~~~~~~~~~~~~~~~~~~~\n";
+        userFile.close();
+
+        KALLA good1("CHOCOLATE",20000);
+        good1.setNo(20);
+        KALLA good2("HYPE", 30000);
+        good2.setNo(10);
+        KALLA good3("PASTIL", 25000);
+        good3.setNo(15);
+        kalla.push_back(good1);
+        kalla.push_back(good2);
+        kalla.push_back(good3);
+    }
+
+    void firstPage() {
+        cout << "Welcome" << endl;
+        cout << "Press 1 for login" << endl;
+        cout << "Press 2 for sign in" << endl;
+        cin >> optionalSelected;
+
+        switch (optionalSelected) {
+        case 1:
+            logIn();
+            break;
+        case 2:
+            signIn();
+            break;
+        default:
+            firstPage();
+        }
+    }
+
+    void signIn() {
+        string username, password;
+
+        cout << "Enter username: ";
+        cin.ignore();
+        getline(cin, username);
+        cout << "Enter password: ";
+        getline(cin, password);
+
+        froshandeh.push_back(FROSHANDEH(username, password));
+        system("CLS");
+        cout << "Done!" << endl;
+
+        ofstream userFile("FROSHANDEH.txt", ios::app);
+        userFile << "Username: " << username << "\nPassword: " << password << "\n----------------\n";
+        userFile.close();
+
+        firstPage();
+    }
+
+    void logIn() {
+        string username, password;
+
+        cout << "Enter username: ";
+        cin.ignore();
+        getline(cin, username);
+        cout << "Enter password: ";
+        getline(cin, password);
+
+        if (username == admin.getUserName() && password == admin.getPassword()) {
+            system("CLS");
+            adminMode();
+            return;
+        }
+
+        for (const FROSHANDEH& user : froshandeh) {
+            if (user.getUserName() == username && user.getPassword() == password) {
+                system("CLS");
+                SEFHEH_DOVOM();
+                return;
+            }
+        }
+        system("CLS");
+        cout << "User not found" << endl;
+        firstPage();
+    }
+
+    void adminMode() {
+        cout << "ADMIN MODE!" << endl;
+        cout << "Press 1 for show KALLA" << endl;
+        cout << "Press 2 for export KALLA stock" << endl;
+        cout << "Press 3 for update money" << endl;
+        cout << "Press 4 for delete KALLA" << endl;
+        cout << "Press 5 for add KALLA" << endl;
+        cout << "Press 6 for edit KALLA" << endl;
+        cin >> optionalSelected;
+
+        switch (optionalSelected) {
+        case 1:
+            show_KALLA_Admin();
+            break;
+        case 2:
+            export_KALLA();
+            break;
+        case 3:
+            updateMoney();
+            break;
+        case 4:
+            delete_KALLA();
+            break;
+        case 5:
+            add_KALLA();
+            break;
+        case 6:
+            edit_KALLA();
+            break;
+        default:
+            adminMode();
+        }
+    }
+    void delete_KALLA() {
+        system("CLS");
+        for (int i = 0; i < kalla.size(); i++) {
+            cout << "Name: " << kalla[i].getName() << endl;
+            cout << "tedad: " << kalla[i].getNo() << endl;
+            cout << "Price: " << kalla[i].getPrice() << endl;
+            cout << "~~~~~~~~~~~~~~~~~~~" << endl;
+        }
+        cout << "Press number of KALLA you want" << endl;
+        int i;
+        cin >> i;
+        kalla.erase(kalla.begin() + i - 1);
+        system("CLS");
+        cout << "Done" << endl;
+        adminMode();
+    }
+    void edit_KALLA() {
+        system("CLS");
+        for (int i = 0; i < kalla.size(); i++) {
+            cout << "Name: " << kalla[i].getName() << endl;
+            cout << "tedad: " << kalla[i].getNo() << endl;
+            cout << "Price: " << kalla[i].getPrice() << endl;
+            cout << "~~~~~~~~~~~~~~~~~~~" << endl;
+        }
+        cout << "Press number of good you want" << endl;
+        int i;
+        cin >> i;
+        cout << "Enter 1 for change no and 2 for price" << endl;
+        cin >> optionalSelected;
+        if (optionalSelected == 1) {
+            cout << "Enter new value" << endl;
+            int j;
+            cin >> j;
+            kalla[i - 1].setNo(j);
+        } else if (optionalSelected == 2) {
+            cout << "Enter new value" << endl;
+            float j;
+            cin >> j;
+            kalla[i - 1].setPrice(j);
+        }
+        system("CLS");
+        cout << "Done" << endl;
+        adminMode();
+    }
+
+    void add_KALLA() {
+        system("CLS");
+        string name;
+        float price;
+        int no;
+        cout << "Enter KALLA name" << endl;
+        cin.ignore();
+        getline(cin, name);
+        cout << "Enter KALLA Toman price" << endl;
+        cin >> price;
+        cout << "Enter no of KALLA" << endl;
+        cin >> no;
+        KALLA good = KALLA(name, price);
+        good.setNo(no);
+        kalla.push_back(good);
+        system("CLS");
+        cout << "Done" << endl;
+        adminMode();
+    };
+
+    void show_KALLA_Admin() {
+        system("CLS");
+        for (const KALLA& KALLA : kalla) {
+            cout << "Name: " << KALLA.getName() << endl;
+            cout << "No: " << KALLA.getNo() << endl;
+            cout << "Price: " << KALLA.getPrice() << endl;
+            cout << "~~~~~~~~~~~~~~~~~~~" << endl;
+        }
+
+        cout << "Press any key for back" << endl;
+        cin.ignore();
+        cin.get();
+        system("CLS");
+        adminMode();
+    }
+
+    void export_KALLA() {
+        ofstream KALLAHAFile("KALLA.txt");
+        for (const KALLA& KALLA : kalla) {
+            KALLAHAFile << "Name: " << KALLA.getName() << "\ntedad: " << KALLA.getNo() << "\nPrice: " << KALLA.getPrice() << "\n----------------\n";
+        }
+        KALLAHAFile.close();
+        system("CLS");
+
+        cout << "Goods exported successfully." <<endl;
+        adminMode();
+    }
+
+    void updateMoney() {
+        system("CLS");
+        cout << "Press 1 for Dollar and 2 for Euro" << endl;
+        cin >> optionalSelected;
+
+        switch (optionalSelected) {
+        case 1:
+            cout << "Enter new value: ";
+            cin >> dollarValue;
+            system("CLS");
+            cout << "Done" << endl;
+            break;
+        case 2:
+            cout << "Enter new value: ";
+            cin >> euroValue;
+            system("CLS");
+            cout << "Done" << endl;
+            break;
+        default:
+            updateMoney();
+        }
+
+        adminMode();
+    }
+
+    void SEFHEH_DOVOM() {
+        system("CLS");
+        cout << "Welcome" << endl;
+        cout << "Press 1 for buying" << endl;
+        cout << "Press 2 for change VAHED_POL" << endl;
+        cin >> optionalSelected;
+        system("CLS");
+        switch (optionalSelected) {
+        case 1:
+            buying();
+            break;
+        case 2:
+            TAGHEER_VAHED_POL();
+            break;
+        default:
+            SEFHEH_DOVOM();
+        }
+    }
+
+    void buying() {
+        for (const KALLA& good : kalla) {
+            cout << "Name: " << good.getName() << endl;
+            cout << "No: " << good.getNo() << endl;
+            cout << "Price: " << good.getPrice() << endl;
+            cout << "~~~~~~~~~~~~~~~~~~~" << endl;
+        }
+
+        int i, no;
+        cout << "Press the number of the good you want: ";
+        cin >> i;
+        cout << "How many do you want? ";
+        cin >> no;
+
+        kalla[i - 1].decreaseNo(no);
+
+        cout << "You ordered ♥ " << no << " of " << kalla[i - 1].getName() << endl;
+        FACTORToFile(i - 1, no);
+    }
+
+    void FACTORToFile(int i, int no) {
+        // Write to txt file
+        ofstream receiptTxtFile("FACTOR.txt", ios::app);
+        receiptTxtFile << "Name: " << kalla[i].getName() << "\ntedad: " << no << "\nPrice: " << no * kalla[i].getPrice() << "\n~~~~~~~~~~~~~~~~~~~\n";
+        receiptTxtFile.close();
+
+        // Write to csv file
+        ofstream receiptCsvFile("FACTOR.csv", ios::app);
+        receiptCsvFile << "Name,No,Price\n" << kalla[i].getName() << "," << no << "," << kalla[i].getPrice() * no << "\n";
+        receiptCsvFile.close();
+        system("CLS");
+        cout << "Done " << endl;
+        SEFHEH_DOVOM();
+    }
+
+    void TAGHEER_VAHED_POL() {
+        cout << "Press 1 to change to Dollar" << endl;
+        cout << "Press 2 to change to Euro" << endl;
+        cout << "Press 3 to change to Toman" << endl;
+        cin >> optionalSelected;
+
+        float n = 1;
+        if (currency == VAHEDPOL::TOMAN) {
+            switch (optionalSelected) {
+            case 1:
+                n = tomanValue / dollarValue;
+                currency = VAHEDPOL::DOLLAR;
+                break;
+            case 2:
+                n = tomanValue / euroValue;
+                currency = VAHEDPOL::EURO;
+                break;
+            case 3:
+                n = 1;
+                break;
+            default:
+                TAGHEER_VAHED_POL();
+            }
+        } else if (currency == VAHEDPOL::DOLLAR) {
+            switch (optionalSelected) {
+            case 1:
+                n = 1;
+                break;
+            case 2:
+                n = dollarValue / euroValue;
+                currency = VAHEDPOL::EURO;
+                break;
+            case 3:
+                n = dollarValue / tomanValue;
+                currency = VAHEDPOL::TOMAN;
+                break;
+            default:
+                TAGHEER_VAHED_POL();
+            }
+        } else if (currency == VAHEDPOL::EURO) {
+            switch (optionalSelected) {
+            case 1:
+                n = euroValue / dollarValue;
+                currency = VAHEDPOL::DOLLAR;
+                break;
+            case 2:
+                n = 1;
+                break;
+            case 3:
+                n = euroValue / tomanValue;
+                currency = VAHEDPOL::TOMAN;
+                break;
+            default:
+                TAGHEER_VAHED_POL();
+            }
+        }
+
+        for (KALLA& good : kalla) {
+            good.setPrice(n * good.getPrice());
+        }
+        system("CLS");
+        cout << "Done!☻ " << endl;
+        SEFHEH_DOVOM();
+    }
+};
